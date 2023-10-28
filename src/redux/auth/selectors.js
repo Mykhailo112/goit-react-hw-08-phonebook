@@ -4,4 +4,4 @@ export const selectIsLoggedIn = state => state.auth.isLoggedIn;
 export const selectAuthError = state => state.auth.error;
 export const selectAuthLoading = state => state.auth.isLoading;
 export const selectIsFetchingCurrentUser = state =>
-  state.auth.selectIsFetchingCurrentUser;
+  state.auth.isFetchingCurrentUser;

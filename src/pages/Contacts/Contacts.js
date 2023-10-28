@@ -4,12 +4,12 @@ import { ContactList } from 'components/ContactList/ContactList';
 import { ContactForm } from 'components/ContactForm/ContactForm';
 
 function Contacts() {
-  const { data: contact } = useFetchContactsQuery();
+  const { data: contacts } = useFetchContactsQuery();
   const totalContact = () => {
-    if (!contact) {
+    if (!contacts) {
       return 0;
     }
-    return contact.length;
+    return contacts.length;
   };
 
   return (

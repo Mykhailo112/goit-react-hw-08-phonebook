@@ -17,7 +17,7 @@ export const contactApi = createApi({
   tegTypes: ['Contact'],
 
   endpoints: builder => ({
-    fetchContact: builder.query({
+    fetchContacts: builder.query({
       query: () => `/contacts`,
       providesTags: ['Contacts'],
     }),
