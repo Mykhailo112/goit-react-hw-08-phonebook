@@ -8,6 +8,7 @@ import { userRefresh } from 'redux/auth/operations';
 import { MainDiv } from './App.styled';
 
 import { Layout } from './Layout/Layout';
+import { GlobalStyle } from './GlobalStyle';
 const Home = lazy(() => import('pages/Home/Home'));
 const Registration = lazy(() => import('pages/Registration/Registration'));
 const Login = lazy(() => import('pages/Login/Login'));
@@ -25,6 +26,7 @@ export const App = () => {
   return (
     !isFetchingCurrentUser && (
       <MainDiv>
+        <GlobalStyle />
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route
@@ -38,13 +40,13 @@ export const App = () => {
             <Route
               path="login"
               element={
-                <PublicRoute redirectTo="/contacts" restricted>
+                <PublicRoute redirectTo="/login" restricted>
                   <Login />
                 </PublicRoute>
               }
             />
             <Route
-              path="registred"
+              path="register"
               element={
                 <PublicRoute redirectTo="/register" restricted>
                   <Registration />
@@ -54,7 +56,7 @@ export const App = () => {
             <Route
               path="contacts"
               element={
-                <PrivateRoute redirectTo="/login" restricted>
+                <PrivateRoute redirectTo="/contacts" restricted>
                   <Contacts />
                 </PrivateRoute>
               }

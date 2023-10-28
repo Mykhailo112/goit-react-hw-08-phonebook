@@ -1,12 +1,12 @@
 import { LoginForm } from 'components/LoginForm/LoginForm';
-import { RegisterLink } from './Login.styled';
+import { RegisterLink, Text } from './Login.styled';
 
 function Login() {
   return (
     <div>
       <h1>Log in</h1>
       <LoginForm />
-      <p>New user?</p>
+      <Text>New user?</Text>
       <RegisterLink to="/register">Create your account</RegisterLink>
     </div>
   );

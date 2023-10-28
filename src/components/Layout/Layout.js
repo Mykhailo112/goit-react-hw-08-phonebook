@@ -5,6 +5,7 @@ import { Loader } from 'components/Loader/Loader';
 import { Navigation } from 'components/Navigation/Navigation';
 import { UserMenu } from 'components/UserMenu/UserMenu';
 import { AuthNav } from 'components/AuthNav/AuthNav';
+import { Text } from './Layout.styled';
 
 export const Layout = () => {
   const isLoggedIn = useIsLoggedIn();
@@ -14,7 +15,7 @@ export const Layout = () => {
       <header>
         <div>
           <div>
-            <p>Phonebook</p>
+            <Text>Phonebook</Text>
           </div>
           <Navigation />
           {isLoggedIn ? <UserMenu /> : <AuthNav />}

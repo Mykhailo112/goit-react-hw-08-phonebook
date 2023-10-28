@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { userSignIn } from 'redux/auth/operations';
+import { Form, Label, Input, Button } from './LoginForm.styled';
 
 export const LoginForm = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ export const LoginForm = () => {
       email: '',
       password: '',
     },
+    mode: 'onTouched',
   });
 
   useEffect(() => {
@@ -30,10 +32,10 @@ export const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(loginUser)}>
-      <label>
+    <Form onSubmit={handleSubmit(loginUser)}>
+      <Label>
         Email
-        <input
+        <Input
           type="email"
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
@@ -42,11 +44,11 @@ export const LoginForm = () => {
           {...register('email')}
         />
         {errors.email && <div>{errors.email?.message}</div>}
-      </label>
+      </Label>
 
-      <label>
+      <Label>
         Password
-        <input
+        <Input
           type="password"
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
@@ -55,8 +57,8 @@ export const LoginForm = () => {
           {...register('password')}
         />
         {errors.password && <div>{errors.password?.message}</div>}
-      </label>
-      <button type="submit">Log in</button>
-    </form>
+      </Label>
+      <Button type="submit">Log in</Button>
+    </Form>
   );
 };
