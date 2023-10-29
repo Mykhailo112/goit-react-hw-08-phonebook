@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useAddContactMutation, useFetchContactsQuery } from 'servises/api';
+import { useAddContactMutation } from 'servises/api';
 import { Form, Label } from './ContactForm.styled';
 
 export const ContactForm = () => {
-  const { data: contact } = useFetchContactsQuery();
   const [addContact] = useAddContactMutation();
 
   const {
@@ -27,11 +26,6 @@ export const ContactForm = () => {
   }, [formState.isSubmitSuccessful, reset]);
 
   const addNewContact = async data => {
-    const normalizedName = data.name.toLowerCase();
-
-    if (contact.find(item => item.name.toLowerCase() === normalizedName)) {
-      return alert(`${data.name} is already in contacts`);
-    }
     try {
       await addContact(data);
       return alert('New contact has been added in your phone book');

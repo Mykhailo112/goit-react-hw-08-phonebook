@@ -14,7 +14,7 @@ export const UserMenu = () => {
     <>
       {isLoggerIn && (
         <div>
-          <p>{user.name}</p>
+          <p>{user}</p>
           <button type="button" onClick={handleLogout}>
             Log out
           </button>
