@@ -4,7 +4,7 @@ export const contactApi = createApi({
   reducerPath: 'phoneBookApi',
 
   baseQuery: fetchBaseQuery({
-    baseURL: 'https://connections-api.herokuapp.com/docs/',
+    baseURL: 'https://connections-api.herokuapp.com/',
     prepareHeaders: (headers, { getState }) => {
       const token = getState().auth.token;
 
@@ -14,7 +14,7 @@ export const contactApi = createApi({
       return headers;
     },
   }),
-  tegTypes: ['Contact'],
+  tagTypes: ['Contacts'],
 
   endpoints: builder => ({
     fetchContacts: builder.query({
