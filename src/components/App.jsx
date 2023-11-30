@@ -56,7 +56,7 @@ export const App = () => {
             <Route
               path="contacts"
               element={
-                <PrivateRoute redirectTo="/register" restricted>
+                <PrivateRoute redirectTo="/login" restricted>
                   <Contacts />
                 </PrivateRoute>
               }
