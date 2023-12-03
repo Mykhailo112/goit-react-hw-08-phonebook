@@ -1,4 +1,4 @@
-export const handlePending = state => {
+export const handlePanding = state => {
   state.isLoading = true;
 };
 

@@ -1,5 +1,5 @@
-import { useSelector } from 'react-redux/es/hooks/useSelector';
-import { selectIsLoggedIn } from 'redux/auth/slice';
+import { useSelector } from 'react-redux';
+import { selectIsLoggedIn } from 'redux/auth/auth-slice';
 import { NavLinkStyled } from './Navigation.styled';
 
 export default function Navigation() {

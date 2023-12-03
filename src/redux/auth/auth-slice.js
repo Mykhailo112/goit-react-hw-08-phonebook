@@ -1,4 +1,4 @@
-import { register, logIn, logOut, refreshUser } from './operations';
+import { register, logIn, logOut, refreshUser } from './auth-operations';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 

@@ -1,9 +1,9 @@
-import { ErrorDiv } from './Error.styled';
+import { ErrorStyled } from './Error.styled';
 
 export const Error = () => {
   return (
-    <ErrorDiv>
+    <ErrorStyled>
       <p>OOPS! There was an ERROR!</p>
-    </ErrorDiv>
+    </ErrorStyled>
   );
 };

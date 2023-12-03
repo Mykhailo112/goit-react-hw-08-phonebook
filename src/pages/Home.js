@@ -6,6 +6,12 @@ export default function Home() {
       <Helmet>
         <title>Home</title>
       </Helmet>
+      <h1>
+        Contacts manager welcome page{' '}
+        <span role="img" aria-label="Greeting icon">
+          ☎️
+        </span>
+      </h1>
     </>
   );
 }

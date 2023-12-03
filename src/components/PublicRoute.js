@@ -1,5 +1,5 @@
-import { useAuth } from 'hooks/hooks';
-import { Navigate } from 'react-router';
+import { useAuth } from 'hooks/useAuth';
+import { Navigate } from 'react-router-dom';
 
 export default function PublicRoute({
   component: Component,

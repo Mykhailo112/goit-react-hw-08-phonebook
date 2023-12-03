@@ -1,8 +1,17 @@
 import { Formik, ErrorMessage } from 'formik';
-import { Form } from './ContactForm.styled';
+import { object, string } from 'yup';
+import {
+  FormStyle,
+  Input,
+  Button,
+  InputWrap,
+  IconPhone,
+  IconUser,
+  FormText,
+} from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectContacts } from 'redux/contact/contactsSlice';
-import { addContact } from 'redux/contact/operations';
+import { selectContacts } from 'redux/contacts/contactsSlice';
+import { addContact } from 'redux/contacts/operations';
 import { useId } from 'react';
 
 const initialValues = {
@@ -11,8 +20,23 @@ const initialValues = {
 };
 
 const FormError = ({ name }) => {
-  return <ErrorMessage name={name} render={message => <p>{message}</p>} />;
+  return (
+    <ErrorMessage
+      name={name}
+      render={message => <FormText>{message}</FormText>}
+    />
+  );
 };
+
+const validationScheme = object().shape({
+  name: string().min(5).max(50).required(),
+  number: string()
+    .matches(
+      /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/i,
+      'does not match the required format'
+    )
+    .required(),
+});
 
 export const ContactForm = ({ onSubmit }) => {
   const labelNameId = useId();
@@ -25,7 +49,7 @@ export const ContactForm = ({ onSubmit }) => {
       contact => contact.name.trim().toLowerCase() === name.trim().toLowerCase()
     );
     if (existingName) {
-      console.log(`${name} is already in contacts`);
+     console.log(`${name} is already in contacts`);
       return;
     }
     const contact = { name: name.trim(), number };
@@ -34,42 +58,46 @@ export const ContactForm = ({ onSubmit }) => {
   };
 
   return (
-    <Formik initialValues={initialValues} onSubmit={onSubmitForm}>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationScheme}
+      onSubmit={onSubmitForm}
+    >
       {({ isSubmitting }) => (
-        <Form autoComplete="off">
+        <FormStyle autoComplete="off">
           <div>
             <label htmlFor={labelNameId}>Name</label>
-            <div>
-              <input
+            <InputWrap>
+              <Input
                 type="text"
                 name="name"
-                pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
                 title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
                 placeholder="Name"
                 id={labelNameId}
               />
-            </div>
+              <IconUser />
+            </InputWrap>
             <FormError name="name" />
           </div>
 
           <div>
             <label htmlFor={labelNumberId}>Number</label>
-            <div>
-              <input
+            <InputWrap>
+              <Input
                 type="tel"
                 name="number"
-                pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
                 title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
                 placeholder="Phone number"
                 id={labelNumberId}
               />
-            </div>
+              <IconPhone />
+            </InputWrap>
             <FormError name="number" />
           </div>
-          <button type="submit" disabled={isSubmitting}>
+          <Button type="submit" disabled={isSubmitting}>
             Add contact
-          </button>
-        </Form>
+          </Button>
+        </FormStyle>
       )}
     </Formik>
   );

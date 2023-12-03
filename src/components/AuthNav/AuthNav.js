@@ -3,8 +3,8 @@ import { NavLinkStyled } from './AuthNav.styled';
 export default function AuthNav() {
   return (
     <div>
-      <NavLinkStyled to="/register">Register</NavLinkStyled>
-      <NavLinkStyled to="/login">Login</NavLinkStyled>
+      <NavLinkStyled to="/register">Registration</NavLinkStyled>
+      <NavLinkStyled to="/login">LogIn</NavLinkStyled>
     </div>
   );
 }

@@ -1,8 +1,18 @@
 import { Formik, ErrorMessage } from 'formik';
+import { object, string } from 'yup';
 import { useDispatch } from 'react-redux';
-import { register } from 'redux/auth/operations';
+import { register } from 'redux/auth/auth-operations';
+import {
+  Button,
+  FormStyle,
+  FormText,
+  IconUser,
+  IconEmail,
+  IconPassword,
+  Input,
+  InputWrap,
+} from './RegisterForm.styled';
 import { useId } from 'react';
-import { Form, Input, Button } from './RegisterForm.styled';
 
 const initialValues = {
   name: '',
@@ -11,8 +21,24 @@ const initialValues = {
 };
 
 const FormError = ({ name }) => {
-  return <ErrorMessage name={name} render={message => <p>{message}</p>} />;
+  return (
+    <ErrorMessage
+      name={name}
+      render={message => <FormText>{message}</FormText>}
+    />
+  );
 };
+
+const validationScheme = object().shape({
+  name: string().min(5).max(50).required(),
+  email: string().email().required(),
+  password: string()
+    .matches(
+      /(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}/g,
+      'does not match the required format'
+    )
+    .required(),
+});
 
 export function RegisterForm() {
   const dispatch = useDispatch();
@@ -32,58 +58,62 @@ export function RegisterForm() {
   };
 
   return (
-    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationScheme}
+      onSubmit={handleSubmit}
+    >
       {({ isSubmitting }) => (
-        <Form autoComplete="off">
+        <FormStyle autoComplete="off">
           <div>
             <label htmlFor={labelNameId}>Name</label>
-            <div>
+            <InputWrap>
               <Input
                 type="text"
                 name="name"
-                pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
                 title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
                 placeholder="name"
                 id={labelNameId}
               />
-            </div>
+              <IconUser />
+            </InputWrap>
             <FormError name="name" />
           </div>
 
           <div>
             <label htmlFor={labelEmailId}>E-mail</label>
-            <div>
+            <InputWrap>
               <Input
                 type="email"
-                pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
                 name="email"
                 title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
                 placeholder="e-mail"
                 id={labelEmailId}
               />
-            </div>
+              <IconEmail />
+            </InputWrap>
             <FormError name="email" />
           </div>
 
           <div>
             <label htmlFor={labelPasswordId}>Password</label>
-            <div>
+            <InputWrap>
               <Input
                 type="password"
-                pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
                 name="password"
                 title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
                 placeholder="password"
                 id={labelPasswordId}
               />
-            </div>
+              <IconPassword />
+            </InputWrap>
             <FormError name="password" />
           </div>
 
           <Button type="submit" disabled={isSubmitting}>
             Register
           </Button>
-        </Form>
+        </FormStyle>
       )}
     </Formik>
   );

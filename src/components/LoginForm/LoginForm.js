@@ -1,7 +1,16 @@
 import { Formik, ErrorMessage } from 'formik';
+import { object, string } from 'yup';
 import { useDispatch } from 'react-redux';
-import { logIn } from 'redux/auth/operations';
-import { Form, Input, Button } from './LoginForm.styled';
+import { logIn } from 'redux/auth/auth-operations';
+import {
+  Button,
+  FormStyle,
+  FormText,
+  IconEmail,
+  IconPassword,
+  Input,
+  InputWrap,
+} from './LoginForm.styled';
 import { useId } from 'react';
 
 const initialValues = {
@@ -10,8 +19,18 @@ const initialValues = {
 };
 
 const FormError = ({ name }) => {
-  return <ErrorMessage name={name} render={message => <p>{message}</p>} />;
+  return (
+    <ErrorMessage
+      name={name}
+      render={message => <FormText>{message}</FormText>}
+    />
+  );
 };
+
+const validationScheme = object().shape({
+  email: string().email().required(),
+  password: string().required(),
+});
 
 export function LoginForm() {
   const dispatch = useDispatch();
@@ -29,43 +48,47 @@ export function LoginForm() {
   };
 
   return (
-    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationScheme}
+      onSubmit={handleSubmit}
+    >
       {({ isSubmitting }) => (
-        <Form autoComplete="off">
+        <FormStyle autoComplete="off">
           <div>
             <label htmlFor={labelEmailId}>E-mail</label>
-            <div>
+            <InputWrap>
               <Input
                 type="email"
                 name="email"
-                pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
                 title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
                 placeholder="e-mail"
                 id={labelEmailId}
               />
-            </div>
+              <IconEmail />
+            </InputWrap>
             <FormError name="email" />
           </div>
 
           <div>
             <label htmlFor={labelPasswordId}>Password</label>
-            <div>
+            <InputWrap>
               <Input
                 type="password"
                 name="password"
-                pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
                 title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
                 placeholder="password"
                 id={labelPasswordId}
               />
-            </div>
+              <IconPassword />
+            </InputWrap>
             <FormError name="password" />
           </div>
 
           <Button type="submit" disabled={isSubmitting}>
             LogIn
           </Button>
-        </Form>
+        </FormStyle>
       )}
     </Formik>
   );

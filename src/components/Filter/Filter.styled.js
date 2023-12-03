@@ -1,24 +1,33 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { filteredContacts, selectFilter } from 'redux/filter/filtersSlice';
-import { useId } from 'react';
+import styled from 'styled-components';
+import { ImSearch } from 'react-icons/im';
 
-export function Filter() {
-  const filter = useSelector(selectFilter);
-  const dispatch = useDispatch();
-  const inputId = useId();
+export const FilterStyleDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
-  return (
-    <>
-      <label htmlFor={inputId}>Find contacts by name</label>
-      <div>
-        <input
-          type="text"
-          placeholder="Name"
-          value={filter}
-          onChange={e => dispatch(filteredContacts(e.currentTarget.value))}
-          id={inputId}
-        />
-      </div>
-    </>
-  );
-}
+export const FilterStyleLabel = styled.label`
+  text-align: left;
+  margin-bottom: 10px;
+`;
+
+export const InputWrap = styled.div`
+  position: relative;
+  margin-bottom: 24px;
+`;
+
+export const Input = styled.input`
+  width: 250px;
+  padding: 4px 8px 4px 28px;
+  border: 2px solid #000000;
+  border-radius: 8px;
+`;
+
+export const IconSearch = styled(ImSearch)`
+  position: absolute;
+  top: 50%;
+  left: 8px;
+  transform: translateY(-50%);
+  fill: #757575;
+`;

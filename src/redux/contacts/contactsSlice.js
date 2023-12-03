@@ -2,14 +2,14 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { addContact, deleteContact, fetchContacts } from './operations';
 import {
   handleFulfilled,
-  handlePending,
+  handlePanding,
   handleRejected,
   handleAddContactFulfilled,
   handleDeleteContactFulfilled,
   handleLogoutFulfilled,
-} from './hendlers.js';
-import { selectFilter } from 'redux/filter/filtersSlice';
-import { logOut } from 'redux/auth/operations';
+} from './hendlers';
+import { selectFilter } from 'redux/filter/filterSlice';
+import { logOut } from 'redux/auth/auth-operations';
 
 const contactsSlice = createSlice({
   name: 'contacts',
@@ -20,13 +20,13 @@ const contactsSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      .addCase(fetchContacts.pending, handlePending)
+      .addCase(fetchContacts.pending, handlePanding)
       .addCase(fetchContacts.fulfilled, handleFulfilled)
       .addCase(fetchContacts.rejected, handleRejected)
-      .addCase(addContact.pending, handlePending)
+      .addCase(addContact.pending, handlePanding)
       .addCase(addContact.fulfilled, handleAddContactFulfilled)
       .addCase(addContact.rejected, handleRejected)
-      .addCase(deleteContact.pending, handlePending)
+      .addCase(deleteContact.pending, handlePanding)
       .addCase(deleteContact.fulfilled, handleDeleteContactFulfilled)
       .addCase(deleteContact.rejected, handleRejected)
       .addCase(logOut.fulfilled, handleLogoutFulfilled);
@@ -37,7 +37,7 @@ export const contactsReducer = contactsSlice.reducer;
 
 export const selectContacts = state => state.contacts.contacts;
 export const selectLoading = state => state.contacts.isLoading;
-export const selectError = state => state.contacts.isError;
+export const selectEroor = state => state.contacts.isError;
 
 export const selectFilteredContacts = createSelector(
   [selectContacts, selectFilter],
