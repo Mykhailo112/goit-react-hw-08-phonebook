@@ -1,57 +1,38 @@
+import { useDispatch, useSelector } from 'react-redux';
 import { Ul, Li, Button } from './ContactList.styled.js';
 import { CgTrash } from 'react-icons/cg';
-import { useMemo } from 'react';
-import { useFilterValue } from 'hooks/hooks.js';
+import { deleteContact } from 'redux/contact/operations.js';
+import { selectLoading } from 'redux/contact/contactsSlice.js';
 import {
-  useFetchContactsQuery,
-  useDeleteContactMutation,
-} from 'servises/api.js';
+  selectContacts,
+  selectFilteredContacts,
+} from 'redux/contact/contactsSlice.js';
 
 export const ContactList = () => {
-  const filterValue = useFilterValue();
-  const { data: contact } = useFetchContactsQuery();
-  const [deleteContact] = useDeleteContactMutation();
+  const filteredContact = useSelector(selectFilteredContacts);
+  const contacts = useSelector(selectContacts);
+  const dispatch = useDispatch();
+  const isLoading = useSelector(selectLoading);
 
-  const getFilteredContact = useMemo(
-    () => () => {
-      if (!contact) {
-        return;
-      }
-      const normalizedFilter = filterValue.toLowerCase().trim();
-
-      return contact.filter(
-        contact =>
-          contact.name.toLowerCase().includes(normalizedFilter) ||
-          contact.number.includes(normalizedFilter)
-      );
-    },
-    [contact, filterValue]
-  );
-
-  const filteredContact = getFilteredContact();
-
-  const removeContact = async (contactId, contactName) => {
-    try {
-      await deleteContact(contactId);
-      alert(`"${contactName}" has been deleted from your phone book`);
-    } catch (error) {
-      alert(`Something has happened, "${contactName}" was not deleted`);
-    }
-  };
-
+  if (!contacts.length) return <p>The Phonebook is empty!</p>;
+  if (!filteredContact.length) return null;
   return (
     <Ul>
-      {filteredContact &&
-        filteredContact.map(({ id, name, number }) => (
-          <Li key={id}>
-            {name + ':' + number}
-            {
-              <Button type="button" onClick={() => removeContact(id, name)}>
-                <CgTrash size={20} />
-              </Button>
-            }
-          </Li>
-        ))}
+      {filteredContact.map(({ id, name, number }) => (
+        <Li key={id}>
+          {name + ':' + number}
+          {
+            <Button
+              type="button"
+              data-id={id}
+              onClick={() => dispatch(deleteContact(id))}
+              disabled={isLoading}
+            >
+              <CgTrash size={20} />
+            </Button>
+          }
+        </Li>
+      ))}
     </Ul>
   );
 };

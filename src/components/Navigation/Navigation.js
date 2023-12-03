@@ -1,13 +1,14 @@
-import { useIsLoggedIn } from 'hooks/hooks';
-import { StyledNavigation, NavigationLink } from './Navigation.styled';
+import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { selectIsLoggedIn } from 'redux/auth/slice';
+import { NavLinkStyled } from './Navigation.styled';
 
-export const Navigation = () => {
-  const isLoggedIn = useIsLoggedIn();
+export default function Navigation() {
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
   return (
-    <StyledNavigation>
-      <NavigationLink to="/">Home</NavigationLink>
-      {isLoggedIn && <NavigationLink to="/contacts">Contacts</NavigationLink>}
-    </StyledNavigation>
+    <nav>
+      <NavLinkStyled to="/">Home</NavLinkStyled>
+      {isLoggedIn && <NavLinkStyled to="/contacts">Contacts</NavLinkStyled>}
+    </nav>
   );
-};
+}

@@ -1,18 +1,10 @@
-import {
-  SignInLink,
-  RegisterLink,
-  RegisterLinkMessage,
-  RegisterLinkWrapper,
-} from './AuthNav.styled';
+import { NavLinkStyled } from './AuthNav.styled';
 
-export const AuthNav = () => {
+export default function AuthNav() {
   return (
-    <ul>
-      <SignInLink to="/login">Log in</SignInLink>
-      <RegisterLinkWrapper>
-        <RegisterLinkMessage>New User?</RegisterLinkMessage>
-        <RegisterLink to="/register">Start here</RegisterLink>
-      </RegisterLinkWrapper>
-    </ul>
+    <div>
+      <NavLinkStyled to="/register">Register</NavLinkStyled>
+      <NavLinkStyled to="/login">Login</NavLinkStyled>
+    </div>
   );
-};
+}

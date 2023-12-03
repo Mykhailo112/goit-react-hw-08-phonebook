@@ -1,70 +1,64 @@
-import { Routes, Route } from 'react-router';
 import { lazy, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { PublicRoute } from './PublicRoute/PublicRoute';
-import { PrivateRoute } from './PrivateRoute/PrivateRoute';
-import { useFetchingCurrentUser } from 'hooks/hooks';
-import { userRefresh } from 'redux/auth/operations';
-import { MainDiv } from './App.styled';
-
-import { Layout } from './Layout/Layout';
 import { GlobalStyle } from './GlobalStyle';
-const Home = lazy(() => import('pages/Home/Home'));
-const Registration = lazy(() => import('pages/Registration/Registration'));
-const Login = lazy(() => import('pages/Login/Login'));
-const Contacts = lazy(() => import('pages/Contacts/Contacts'));
-const NotFound = lazy(() => import('pages/NotFound/NotFound'));
+import { Route, Routes } from 'react-router';
+import { Layout } from './Layout/Layout';
+import { refreshUser } from 'redux/auth/operations';
+import PrivateRoute from './PrivateRoute';
+import PublicRoute from './PublicRoute';
+import { routes } from 'routes';
+import { useAuth } from 'hooks/hooks';
+
+const HomePage = lazy(() => import('../pages/Home'));
+const ContactsPage = lazy(() => import('../pages/Contacts'));
+const LoginPage = lazy(() => import('../pages/Login'));
+const RegisterPage = lazy(() => import('../pages/Register'));
 
 export const App = () => {
   const dispatch = useDispatch();
-  const isFetchingCurrentUser = useFetchingCurrentUser();
+  const { isRefreshing } = useAuth();
 
   useEffect(() => {
-    dispatch(userRefresh());
+    dispatch(refreshUser());
   }, [dispatch]);
 
   return (
-    !isFetchingCurrentUser && (
-      <MainDiv>
-        <GlobalStyle />
+    !isRefreshing && (
+      <>
         <Routes>
-          <Route path="/" element={<Layout />}>
+          <Route path={routes.HOME} element={<Layout />}>
+            <Route index element={<HomePage />} />
             <Route
-              index
+              path={routes.REGISTER}
               element={
-                <PublicRoute>
-                  <Home />
-                </PublicRoute>
+                <PublicRoute
+                  redirectTo={routes.CONTACTS}
+                  component={RegisterPage}
+                />
               }
             />
             <Route
-              path="login"
+              path={routes.LOGIN}
               element={
-                <PublicRoute redirectTo="/register" restricted>
-                  <Login />
-                </PublicRoute>
+                <PublicRoute
+                  redirectTo={routes.CONTACTS}
+                  component={LoginPage}
+                />
               }
             />
             <Route
-              path="register"
+              path={routes.CONTACTS}
               element={
-                <PublicRoute redirectTo="/contacts" restricted>
-                  <Registration />
-                </PublicRoute>
+                <PrivateRoute
+                  redirectTo={routes.LOGIN}
+                  component={ContactsPage}
+                />
               }
             />
-            <Route
-              path="contacts"
-              element={
-                <PrivateRoute redirectTo="/login" restricted>
-                  <Contacts />
-                </PrivateRoute>
-              }
-            />
-            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
-      </MainDiv>
+        <GlobalStyle />
+      </>
     )
   );
 };

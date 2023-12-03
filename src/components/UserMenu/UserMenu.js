@@ -1,25 +1,17 @@
 import { useDispatch } from 'react-redux';
-import { userSignOut } from 'redux/auth/operations';
-import { useIsLoggedIn, useUser } from 'hooks/hooks';
+import { logOut } from 'redux/auth/operations';
+import { useAuth } from 'hooks/hooks';
 
-export const UserMenu = () => {
-  const isLoggerIn = useIsLoggedIn();
-  const user = useUser();
+export default function UserMenu() {
   const dispatch = useDispatch();
+  const { user } = useAuth();
 
-  const handleLogout = () => {
-    dispatch(userSignOut());
-  };
   return (
-    <>
-      {isLoggerIn && (
-        <div>
-          <p>{user.name}</p>
-          <button type="button" onClick={handleLogout}>
-            Log out
-          </button>
-        </div>
-      )}
-    </>
+    <div>
+      <p>{user}</p>
+      <button type="button" onClick={() => dispatch(logOut())}>
+        Logout
+      </button>
+    </div>
   );
-};
+}

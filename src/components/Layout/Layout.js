@@ -1,33 +1,21 @@
-import { Suspense } from 'react';
 import { Outlet } from 'react-router';
-import { useIsLoggedIn } from 'hooks/hooks';
-import { Loader } from 'components/Loader/Loader';
-import { Navigation } from 'components/Navigation/Navigation';
-import { UserMenu } from 'components/UserMenu/UserMenu';
-import { AuthNav } from 'components/AuthNav/AuthNav';
-import { Text } from './Layout.styled';
+import { Suspense } from 'react';
+import AuthNav from 'components/AuthNav/AuthNav';
+import Navigation from 'components/Navigation/Navigation';
+import UserMenu from 'components/UserMenu/UserMenu';
+import { useAuth } from 'hooks/hooks';
 
 export const Layout = () => {
-  const isLoggedIn = useIsLoggedIn();
-
+  const { isLoggedIn } = useAuth();
   return (
     <>
-      <header>
-        <div>
-          <div>
-            <Text>Phonebook</Text>
-          </div>
+      <Suspense fallback={null}>
+        <header>
           <Navigation />
           {isLoggedIn ? <UserMenu /> : <AuthNav />}
-        </div>
-      </header>
-      <main>
-        <div>
-          <Suspense fallback={<Loader />}>
-            <Outlet />
-          </Suspense>
-        </div>
-      </main>
+        </header>
+        <Outlet />
+      </Suspense>
     </>
   );
 };
